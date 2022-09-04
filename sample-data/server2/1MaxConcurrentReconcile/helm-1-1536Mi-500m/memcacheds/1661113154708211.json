@@ -1,0 +1,1224 @@
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Memcached",
+            "metadata": {
+                "annotations": {
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"cache.example.com/v1alpha1\",\"kind\":\"Memcached\",\"metadata\":{\"annotations\":{},\"name\":\"memcached-sample00\",\"namespace\":\"memcached-operator-system\"},\"spec\":{\"AntiAffinity\":\"soft\",\"affinity\":{},\"extraContainers\":\"\",\"extraVolumes\":\"\",\"image\":\"memcached:1.5.20\",\"kind\":\"StatefulSet\",\"memcached\":{\"extendedOptions\":\"modern\",\"extraArgs\":[],\"maxItemMemory\":64,\"verbosity\":\"v\"},\"metrics\":{\"enabled\":false,\"image\":\"quay.io/prometheus/memcached-exporter:v0.6.0\",\"resources\":{},\"serviceMonitor\":{\"enabled\":false,\"interval\":\"15s\"}},\"nodeSelector\":{},\"pdbMinAvailable\":2,\"podAnnotations\":{},\"replicaCount\":1,\"resources\":{\"requests\":{\"cpu\":\"50m\",\"memory\":\"64Mi\"}},\"securityContext\":{\"enabled\":false,\"fsGroup\":1001,\"runAsUser\":1001},\"serviceAnnotations\":{},\"tolerations\":{},\"updateStrategy\":{\"type\":\"RollingUpdate\"}}}\n"
+                },
+                "creationTimestamp": "2022-08-21T20:16:15Z",
+                "finalizers": [
+                    "helm.sdk.operatorframework.io/uninstall-release"
+                ],
+                "generation": 1,
+                "name": "memcached-sample00",
+                "namespace": "memcached-operator-system",
+                "resourceVersion": "1921",
+                "uid": "7f3db803-a3c4-4052-a263-de18a083b7a6"
+            },
+            "spec": {
+                "AntiAffinity": "soft",
+                "affinity": {},
+                "extraContainers": "",
+                "extraVolumes": "",
+                "image": "memcached:1.5.20",
+                "kind": "StatefulSet",
+                "memcached": {
+                    "extendedOptions": "modern",
+                    "extraArgs": [],
+                    "maxItemMemory": 64,
+                    "verbosity": "v"
+                },
+                "metrics": {
+                    "enabled": false,
+                    "image": "quay.io/prometheus/memcached-exporter:v0.6.0",
+                    "resources": {},
+                    "serviceMonitor": {
+                        "enabled": false,
+                        "interval": "15s"
+                    }
+                },
+                "nodeSelector": {},
+                "pdbMinAvailable": 2,
+                "podAnnotations": {},
+                "replicaCount": 1,
+                "resources": {
+                    "requests": {
+                        "cpu": "50m",
+                        "memory": "64Mi"
+                    }
+                },
+                "securityContext": {
+                    "enabled": false,
+                    "fsGroup": 1001,
+                    "runAsUser": 1001
+                },
+                "serviceAnnotations": {},
+                "tolerations": {},
+                "updateStrategy": {
+                    "type": "RollingUpdate"
+                }
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:15Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:16Z",
+                        "message": "Memcached can be accessed via port 11211 on the following DNS name from within your cluster:\nmemcached-sample00.memcached-operator-system.svc.cluster.local\n\nIf you'd like to test your instance, forward the port locally:\n\n  export POD_NAME=$(kubectl get pods --namespace memcached-operator-system -l \"app.kubernetes.io/name=memcached,app.kubernetes.io/instance=memcached-sample00\" -o jsonpath=\"{.items[0].metadata.name}\")\n  kubectl port-forward $POD_NAME 11211\n\nIn another tab, attempt to set a key:\n\n  $ echo -e 'set mykey 0 60 5\\r\\nhello\\r' | nc localhost 11211\n\nYou should see:\n\n  STORED\n",
+                        "reason": "InstallSuccessful",
+                        "status": "True",
+                        "type": "Deployed"
+                    }
+                ],
+                "deployedRelease": {
+                    "manifest": "---\n# Source: memcached/templates/svc.yaml\napiVersion: v1\nkind: Service\nmetadata:\n  name: memcached-sample00\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample00\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\n  annotations:\n    {}\nspec:\n  clusterIP: None\n  ports:\n  - name: memcache\n    port: 11211\n    targetPort: memcache\n  selector:\n    app.kubernetes.io/name: memcached\n    app.kubernetes.io/instance: memcached-sample00\n---\n# Source: memcached/templates/statefulset.yaml\napiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: memcached-sample00\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample00\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\nspec:\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: memcached\n      app.kubernetes.io/instance: memcached-sample00\n  serviceName: memcached-sample00\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        app.kubernetes.io/name: memcached\n        app.kubernetes.io/instance: memcached-sample00\n    spec:\n      affinity:\n        podAntiAffinity:\n          preferredDuringSchedulingIgnoredDuringExecution:\n          - weight: 5\n            podAffinityTerm:\n              topologyKey: \"kubernetes.io/hostname\"\n              labelSelector:\n                matchLabels:\n                  app.kubernetes.io/name: memcached\n                  app.kubernetes.io/instance: memcached-sample00\n      containers:\n      - name: memcached-sample00\n        image: memcached:1.5.20\n        imagePullPolicy: \"\"\n        command:\n        - memcached\n        - -m 64\n        - -o\n        - modern\n        - -v\n        ports:\n        - name: memcache\n          containerPort: 11211\n        livenessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 30\n          timeoutSeconds: 5\n        readinessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 5\n          timeoutSeconds: 1\n        resources:\n          requests:\n            cpu: 50m\n            memory: 64Mi\n  updateStrategy:\n    type: RollingUpdate\n",
+                    "name": "memcached-sample00"
+                }
+            }
+        },
+        {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Memcached",
+            "metadata": {
+                "annotations": {
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"cache.example.com/v1alpha1\",\"kind\":\"Memcached\",\"metadata\":{\"annotations\":{},\"name\":\"memcached-sample01\",\"namespace\":\"memcached-operator-system\"},\"spec\":{\"AntiAffinity\":\"soft\",\"affinity\":{},\"extraContainers\":\"\",\"extraVolumes\":\"\",\"image\":\"memcached:1.5.20\",\"kind\":\"StatefulSet\",\"memcached\":{\"extendedOptions\":\"modern\",\"extraArgs\":[],\"maxItemMemory\":64,\"verbosity\":\"v\"},\"metrics\":{\"enabled\":false,\"image\":\"quay.io/prometheus/memcached-exporter:v0.6.0\",\"resources\":{},\"serviceMonitor\":{\"enabled\":false,\"interval\":\"15s\"}},\"nodeSelector\":{},\"pdbMinAvailable\":2,\"podAnnotations\":{},\"replicaCount\":1,\"resources\":{\"requests\":{\"cpu\":\"50m\",\"memory\":\"64Mi\"}},\"securityContext\":{\"enabled\":false,\"fsGroup\":1001,\"runAsUser\":1001},\"serviceAnnotations\":{},\"tolerations\":{},\"updateStrategy\":{\"type\":\"RollingUpdate\"}}}\n"
+                },
+                "creationTimestamp": "2022-08-21T20:16:15Z",
+                "finalizers": [
+                    "helm.sdk.operatorframework.io/uninstall-release"
+                ],
+                "generation": 1,
+                "name": "memcached-sample01",
+                "namespace": "memcached-operator-system",
+                "resourceVersion": "1953",
+                "uid": "913c8206-11bd-4b10-aa17-d978aacaed36"
+            },
+            "spec": {
+                "AntiAffinity": "soft",
+                "affinity": {},
+                "extraContainers": "",
+                "extraVolumes": "",
+                "image": "memcached:1.5.20",
+                "kind": "StatefulSet",
+                "memcached": {
+                    "extendedOptions": "modern",
+                    "extraArgs": [],
+                    "maxItemMemory": 64,
+                    "verbosity": "v"
+                },
+                "metrics": {
+                    "enabled": false,
+                    "image": "quay.io/prometheus/memcached-exporter:v0.6.0",
+                    "resources": {},
+                    "serviceMonitor": {
+                        "enabled": false,
+                        "interval": "15s"
+                    }
+                },
+                "nodeSelector": {},
+                "pdbMinAvailable": 2,
+                "podAnnotations": {},
+                "replicaCount": 1,
+                "resources": {
+                    "requests": {
+                        "cpu": "50m",
+                        "memory": "64Mi"
+                    }
+                },
+                "securityContext": {
+                    "enabled": false,
+                    "fsGroup": 1001,
+                    "runAsUser": 1001
+                },
+                "serviceAnnotations": {},
+                "tolerations": {},
+                "updateStrategy": {
+                    "type": "RollingUpdate"
+                }
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:16Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:18Z",
+                        "message": "Memcached can be accessed via port 11211 on the following DNS name from within your cluster:\nmemcached-sample01.memcached-operator-system.svc.cluster.local\n\nIf you'd like to test your instance, forward the port locally:\n\n  export POD_NAME=$(kubectl get pods --namespace memcached-operator-system -l \"app.kubernetes.io/name=memcached,app.kubernetes.io/instance=memcached-sample01\" -o jsonpath=\"{.items[0].metadata.name}\")\n  kubectl port-forward $POD_NAME 11211\n\nIn another tab, attempt to set a key:\n\n  $ echo -e 'set mykey 0 60 5\\r\\nhello\\r' | nc localhost 11211\n\nYou should see:\n\n  STORED\n",
+                        "reason": "InstallSuccessful",
+                        "status": "True",
+                        "type": "Deployed"
+                    }
+                ],
+                "deployedRelease": {
+                    "manifest": "---\n# Source: memcached/templates/svc.yaml\napiVersion: v1\nkind: Service\nmetadata:\n  name: memcached-sample01\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample01\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\n  annotations:\n    {}\nspec:\n  clusterIP: None\n  ports:\n  - name: memcache\n    port: 11211\n    targetPort: memcache\n  selector:\n    app.kubernetes.io/name: memcached\n    app.kubernetes.io/instance: memcached-sample01\n---\n# Source: memcached/templates/statefulset.yaml\napiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: memcached-sample01\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample01\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\nspec:\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: memcached\n      app.kubernetes.io/instance: memcached-sample01\n  serviceName: memcached-sample01\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        app.kubernetes.io/name: memcached\n        app.kubernetes.io/instance: memcached-sample01\n    spec:\n      affinity:\n        podAntiAffinity:\n          preferredDuringSchedulingIgnoredDuringExecution:\n          - weight: 5\n            podAffinityTerm:\n              topologyKey: \"kubernetes.io/hostname\"\n              labelSelector:\n                matchLabels:\n                  app.kubernetes.io/name: memcached\n                  app.kubernetes.io/instance: memcached-sample01\n      containers:\n      - name: memcached-sample01\n        image: memcached:1.5.20\n        imagePullPolicy: \"\"\n        command:\n        - memcached\n        - -m 64\n        - -o\n        - modern\n        - -v\n        ports:\n        - name: memcache\n          containerPort: 11211\n        livenessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 30\n          timeoutSeconds: 5\n        readinessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 5\n          timeoutSeconds: 1\n        resources:\n          requests:\n            cpu: 50m\n            memory: 64Mi\n  updateStrategy:\n    type: RollingUpdate\n",
+                    "name": "memcached-sample01"
+                }
+            }
+        },
+        {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Memcached",
+            "metadata": {
+                "annotations": {
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"cache.example.com/v1alpha1\",\"kind\":\"Memcached\",\"metadata\":{\"annotations\":{},\"name\":\"memcached-sample02\",\"namespace\":\"memcached-operator-system\"},\"spec\":{\"AntiAffinity\":\"soft\",\"affinity\":{},\"extraContainers\":\"\",\"extraVolumes\":\"\",\"image\":\"memcached:1.5.20\",\"kind\":\"StatefulSet\",\"memcached\":{\"extendedOptions\":\"modern\",\"extraArgs\":[],\"maxItemMemory\":64,\"verbosity\":\"v\"},\"metrics\":{\"enabled\":false,\"image\":\"quay.io/prometheus/memcached-exporter:v0.6.0\",\"resources\":{},\"serviceMonitor\":{\"enabled\":false,\"interval\":\"15s\"}},\"nodeSelector\":{},\"pdbMinAvailable\":2,\"podAnnotations\":{},\"replicaCount\":1,\"resources\":{\"requests\":{\"cpu\":\"50m\",\"memory\":\"64Mi\"}},\"securityContext\":{\"enabled\":false,\"fsGroup\":1001,\"runAsUser\":1001},\"serviceAnnotations\":{},\"tolerations\":{},\"updateStrategy\":{\"type\":\"RollingUpdate\"}}}\n"
+                },
+                "creationTimestamp": "2022-08-21T20:16:16Z",
+                "finalizers": [
+                    "helm.sdk.operatorframework.io/uninstall-release"
+                ],
+                "generation": 1,
+                "name": "memcached-sample02",
+                "namespace": "memcached-operator-system",
+                "resourceVersion": "1979",
+                "uid": "a3907cf0-9494-42e0-a93e-ca0f78f1e4f9"
+            },
+            "spec": {
+                "AntiAffinity": "soft",
+                "affinity": {},
+                "extraContainers": "",
+                "extraVolumes": "",
+                "image": "memcached:1.5.20",
+                "kind": "StatefulSet",
+                "memcached": {
+                    "extendedOptions": "modern",
+                    "extraArgs": [],
+                    "maxItemMemory": 64,
+                    "verbosity": "v"
+                },
+                "metrics": {
+                    "enabled": false,
+                    "image": "quay.io/prometheus/memcached-exporter:v0.6.0",
+                    "resources": {},
+                    "serviceMonitor": {
+                        "enabled": false,
+                        "interval": "15s"
+                    }
+                },
+                "nodeSelector": {},
+                "pdbMinAvailable": 2,
+                "podAnnotations": {},
+                "replicaCount": 1,
+                "resources": {
+                    "requests": {
+                        "cpu": "50m",
+                        "memory": "64Mi"
+                    }
+                },
+                "securityContext": {
+                    "enabled": false,
+                    "fsGroup": 1001,
+                    "runAsUser": 1001
+                },
+                "serviceAnnotations": {},
+                "tolerations": {},
+                "updateStrategy": {
+                    "type": "RollingUpdate"
+                }
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:18Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:19Z",
+                        "message": "Memcached can be accessed via port 11211 on the following DNS name from within your cluster:\nmemcached-sample02.memcached-operator-system.svc.cluster.local\n\nIf you'd like to test your instance, forward the port locally:\n\n  export POD_NAME=$(kubectl get pods --namespace memcached-operator-system -l \"app.kubernetes.io/name=memcached,app.kubernetes.io/instance=memcached-sample02\" -o jsonpath=\"{.items[0].metadata.name}\")\n  kubectl port-forward $POD_NAME 11211\n\nIn another tab, attempt to set a key:\n\n  $ echo -e 'set mykey 0 60 5\\r\\nhello\\r' | nc localhost 11211\n\nYou should see:\n\n  STORED\n",
+                        "reason": "InstallSuccessful",
+                        "status": "True",
+                        "type": "Deployed"
+                    }
+                ],
+                "deployedRelease": {
+                    "manifest": "---\n# Source: memcached/templates/svc.yaml\napiVersion: v1\nkind: Service\nmetadata:\n  name: memcached-sample02\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample02\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\n  annotations:\n    {}\nspec:\n  clusterIP: None\n  ports:\n  - name: memcache\n    port: 11211\n    targetPort: memcache\n  selector:\n    app.kubernetes.io/name: memcached\n    app.kubernetes.io/instance: memcached-sample02\n---\n# Source: memcached/templates/statefulset.yaml\napiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: memcached-sample02\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample02\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\nspec:\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: memcached\n      app.kubernetes.io/instance: memcached-sample02\n  serviceName: memcached-sample02\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        app.kubernetes.io/name: memcached\n        app.kubernetes.io/instance: memcached-sample02\n    spec:\n      affinity:\n        podAntiAffinity:\n          preferredDuringSchedulingIgnoredDuringExecution:\n          - weight: 5\n            podAffinityTerm:\n              topologyKey: \"kubernetes.io/hostname\"\n              labelSelector:\n                matchLabels:\n                  app.kubernetes.io/name: memcached\n                  app.kubernetes.io/instance: memcached-sample02\n      containers:\n      - name: memcached-sample02\n        image: memcached:1.5.20\n        imagePullPolicy: \"\"\n        command:\n        - memcached\n        - -m 64\n        - -o\n        - modern\n        - -v\n        ports:\n        - name: memcache\n          containerPort: 11211\n        livenessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 30\n          timeoutSeconds: 5\n        readinessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 5\n          timeoutSeconds: 1\n        resources:\n          requests:\n            cpu: 50m\n            memory: 64Mi\n  updateStrategy:\n    type: RollingUpdate\n",
+                    "name": "memcached-sample02"
+                }
+            }
+        },
+        {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Memcached",
+            "metadata": {
+                "annotations": {
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"cache.example.com/v1alpha1\",\"kind\":\"Memcached\",\"metadata\":{\"annotations\":{},\"name\":\"memcached-sample03\",\"namespace\":\"memcached-operator-system\"},\"spec\":{\"AntiAffinity\":\"soft\",\"affinity\":{},\"extraContainers\":\"\",\"extraVolumes\":\"\",\"image\":\"memcached:1.5.20\",\"kind\":\"StatefulSet\",\"memcached\":{\"extendedOptions\":\"modern\",\"extraArgs\":[],\"maxItemMemory\":64,\"verbosity\":\"v\"},\"metrics\":{\"enabled\":false,\"image\":\"quay.io/prometheus/memcached-exporter:v0.6.0\",\"resources\":{},\"serviceMonitor\":{\"enabled\":false,\"interval\":\"15s\"}},\"nodeSelector\":{},\"pdbMinAvailable\":2,\"podAnnotations\":{},\"replicaCount\":1,\"resources\":{\"requests\":{\"cpu\":\"50m\",\"memory\":\"64Mi\"}},\"securityContext\":{\"enabled\":false,\"fsGroup\":1001,\"runAsUser\":1001},\"serviceAnnotations\":{},\"tolerations\":{},\"updateStrategy\":{\"type\":\"RollingUpdate\"}}}\n"
+                },
+                "creationTimestamp": "2022-08-21T20:16:16Z",
+                "finalizers": [
+                    "helm.sdk.operatorframework.io/uninstall-release"
+                ],
+                "generation": 1,
+                "name": "memcached-sample03",
+                "namespace": "memcached-operator-system",
+                "resourceVersion": "2004",
+                "uid": "ef4a30e5-8c89-49ad-b7cb-280babcc9974"
+            },
+            "spec": {
+                "AntiAffinity": "soft",
+                "affinity": {},
+                "extraContainers": "",
+                "extraVolumes": "",
+                "image": "memcached:1.5.20",
+                "kind": "StatefulSet",
+                "memcached": {
+                    "extendedOptions": "modern",
+                    "extraArgs": [],
+                    "maxItemMemory": 64,
+                    "verbosity": "v"
+                },
+                "metrics": {
+                    "enabled": false,
+                    "image": "quay.io/prometheus/memcached-exporter:v0.6.0",
+                    "resources": {},
+                    "serviceMonitor": {
+                        "enabled": false,
+                        "interval": "15s"
+                    }
+                },
+                "nodeSelector": {},
+                "pdbMinAvailable": 2,
+                "podAnnotations": {},
+                "replicaCount": 1,
+                "resources": {
+                    "requests": {
+                        "cpu": "50m",
+                        "memory": "64Mi"
+                    }
+                },
+                "securityContext": {
+                    "enabled": false,
+                    "fsGroup": 1001,
+                    "runAsUser": 1001
+                },
+                "serviceAnnotations": {},
+                "tolerations": {},
+                "updateStrategy": {
+                    "type": "RollingUpdate"
+                }
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:19Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:21Z",
+                        "message": "Memcached can be accessed via port 11211 on the following DNS name from within your cluster:\nmemcached-sample03.memcached-operator-system.svc.cluster.local\n\nIf you'd like to test your instance, forward the port locally:\n\n  export POD_NAME=$(kubectl get pods --namespace memcached-operator-system -l \"app.kubernetes.io/name=memcached,app.kubernetes.io/instance=memcached-sample03\" -o jsonpath=\"{.items[0].metadata.name}\")\n  kubectl port-forward $POD_NAME 11211\n\nIn another tab, attempt to set a key:\n\n  $ echo -e 'set mykey 0 60 5\\r\\nhello\\r' | nc localhost 11211\n\nYou should see:\n\n  STORED\n",
+                        "reason": "InstallSuccessful",
+                        "status": "True",
+                        "type": "Deployed"
+                    }
+                ],
+                "deployedRelease": {
+                    "manifest": "---\n# Source: memcached/templates/svc.yaml\napiVersion: v1\nkind: Service\nmetadata:\n  name: memcached-sample03\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample03\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\n  annotations:\n    {}\nspec:\n  clusterIP: None\n  ports:\n  - name: memcache\n    port: 11211\n    targetPort: memcache\n  selector:\n    app.kubernetes.io/name: memcached\n    app.kubernetes.io/instance: memcached-sample03\n---\n# Source: memcached/templates/statefulset.yaml\napiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: memcached-sample03\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample03\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\nspec:\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: memcached\n      app.kubernetes.io/instance: memcached-sample03\n  serviceName: memcached-sample03\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        app.kubernetes.io/name: memcached\n        app.kubernetes.io/instance: memcached-sample03\n    spec:\n      affinity:\n        podAntiAffinity:\n          preferredDuringSchedulingIgnoredDuringExecution:\n          - weight: 5\n            podAffinityTerm:\n              topologyKey: \"kubernetes.io/hostname\"\n              labelSelector:\n                matchLabels:\n                  app.kubernetes.io/name: memcached\n                  app.kubernetes.io/instance: memcached-sample03\n      containers:\n      - name: memcached-sample03\n        image: memcached:1.5.20\n        imagePullPolicy: \"\"\n        command:\n        - memcached\n        - -m 64\n        - -o\n        - modern\n        - -v\n        ports:\n        - name: memcache\n          containerPort: 11211\n        livenessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 30\n          timeoutSeconds: 5\n        readinessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 5\n          timeoutSeconds: 1\n        resources:\n          requests:\n            cpu: 50m\n            memory: 64Mi\n  updateStrategy:\n    type: RollingUpdate\n",
+                    "name": "memcached-sample03"
+                }
+            }
+        },
+        {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Memcached",
+            "metadata": {
+                "annotations": {
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"cache.example.com/v1alpha1\",\"kind\":\"Memcached\",\"metadata\":{\"annotations\":{},\"name\":\"memcached-sample04\",\"namespace\":\"memcached-operator-system\"},\"spec\":{\"AntiAffinity\":\"soft\",\"affinity\":{},\"extraContainers\":\"\",\"extraVolumes\":\"\",\"image\":\"memcached:1.5.20\",\"kind\":\"StatefulSet\",\"memcached\":{\"extendedOptions\":\"modern\",\"extraArgs\":[],\"maxItemMemory\":64,\"verbosity\":\"v\"},\"metrics\":{\"enabled\":false,\"image\":\"quay.io/prometheus/memcached-exporter:v0.6.0\",\"resources\":{},\"serviceMonitor\":{\"enabled\":false,\"interval\":\"15s\"}},\"nodeSelector\":{},\"pdbMinAvailable\":2,\"podAnnotations\":{},\"replicaCount\":1,\"resources\":{\"requests\":{\"cpu\":\"50m\",\"memory\":\"64Mi\"}},\"securityContext\":{\"enabled\":false,\"fsGroup\":1001,\"runAsUser\":1001},\"serviceAnnotations\":{},\"tolerations\":{},\"updateStrategy\":{\"type\":\"RollingUpdate\"}}}\n"
+                },
+                "creationTimestamp": "2022-08-21T20:16:16Z",
+                "finalizers": [
+                    "helm.sdk.operatorframework.io/uninstall-release"
+                ],
+                "generation": 1,
+                "name": "memcached-sample04",
+                "namespace": "memcached-operator-system",
+                "resourceVersion": "2030",
+                "uid": "14cd3c5f-e1cc-45e6-a7c6-156cd308016d"
+            },
+            "spec": {
+                "AntiAffinity": "soft",
+                "affinity": {},
+                "extraContainers": "",
+                "extraVolumes": "",
+                "image": "memcached:1.5.20",
+                "kind": "StatefulSet",
+                "memcached": {
+                    "extendedOptions": "modern",
+                    "extraArgs": [],
+                    "maxItemMemory": 64,
+                    "verbosity": "v"
+                },
+                "metrics": {
+                    "enabled": false,
+                    "image": "quay.io/prometheus/memcached-exporter:v0.6.0",
+                    "resources": {},
+                    "serviceMonitor": {
+                        "enabled": false,
+                        "interval": "15s"
+                    }
+                },
+                "nodeSelector": {},
+                "pdbMinAvailable": 2,
+                "podAnnotations": {},
+                "replicaCount": 1,
+                "resources": {
+                    "requests": {
+                        "cpu": "50m",
+                        "memory": "64Mi"
+                    }
+                },
+                "securityContext": {
+                    "enabled": false,
+                    "fsGroup": 1001,
+                    "runAsUser": 1001
+                },
+                "serviceAnnotations": {},
+                "tolerations": {},
+                "updateStrategy": {
+                    "type": "RollingUpdate"
+                }
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:21Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:23Z",
+                        "message": "Memcached can be accessed via port 11211 on the following DNS name from within your cluster:\nmemcached-sample04.memcached-operator-system.svc.cluster.local\n\nIf you'd like to test your instance, forward the port locally:\n\n  export POD_NAME=$(kubectl get pods --namespace memcached-operator-system -l \"app.kubernetes.io/name=memcached,app.kubernetes.io/instance=memcached-sample04\" -o jsonpath=\"{.items[0].metadata.name}\")\n  kubectl port-forward $POD_NAME 11211\n\nIn another tab, attempt to set a key:\n\n  $ echo -e 'set mykey 0 60 5\\r\\nhello\\r' | nc localhost 11211\n\nYou should see:\n\n  STORED\n",
+                        "reason": "InstallSuccessful",
+                        "status": "True",
+                        "type": "Deployed"
+                    }
+                ],
+                "deployedRelease": {
+                    "manifest": "---\n# Source: memcached/templates/svc.yaml\napiVersion: v1\nkind: Service\nmetadata:\n  name: memcached-sample04\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample04\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\n  annotations:\n    {}\nspec:\n  clusterIP: None\n  ports:\n  - name: memcache\n    port: 11211\n    targetPort: memcache\n  selector:\n    app.kubernetes.io/name: memcached\n    app.kubernetes.io/instance: memcached-sample04\n---\n# Source: memcached/templates/statefulset.yaml\napiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: memcached-sample04\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample04\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\nspec:\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: memcached\n      app.kubernetes.io/instance: memcached-sample04\n  serviceName: memcached-sample04\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        app.kubernetes.io/name: memcached\n        app.kubernetes.io/instance: memcached-sample04\n    spec:\n      affinity:\n        podAntiAffinity:\n          preferredDuringSchedulingIgnoredDuringExecution:\n          - weight: 5\n            podAffinityTerm:\n              topologyKey: \"kubernetes.io/hostname\"\n              labelSelector:\n                matchLabels:\n                  app.kubernetes.io/name: memcached\n                  app.kubernetes.io/instance: memcached-sample04\n      containers:\n      - name: memcached-sample04\n        image: memcached:1.5.20\n        imagePullPolicy: \"\"\n        command:\n        - memcached\n        - -m 64\n        - -o\n        - modern\n        - -v\n        ports:\n        - name: memcache\n          containerPort: 11211\n        livenessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 30\n          timeoutSeconds: 5\n        readinessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 5\n          timeoutSeconds: 1\n        resources:\n          requests:\n            cpu: 50m\n            memory: 64Mi\n  updateStrategy:\n    type: RollingUpdate\n",
+                    "name": "memcached-sample04"
+                }
+            }
+        },
+        {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Memcached",
+            "metadata": {
+                "annotations": {
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"cache.example.com/v1alpha1\",\"kind\":\"Memcached\",\"metadata\":{\"annotations\":{},\"name\":\"memcached-sample05\",\"namespace\":\"memcached-operator-system\"},\"spec\":{\"AntiAffinity\":\"soft\",\"affinity\":{},\"extraContainers\":\"\",\"extraVolumes\":\"\",\"image\":\"memcached:1.5.20\",\"kind\":\"StatefulSet\",\"memcached\":{\"extendedOptions\":\"modern\",\"extraArgs\":[],\"maxItemMemory\":64,\"verbosity\":\"v\"},\"metrics\":{\"enabled\":false,\"image\":\"quay.io/prometheus/memcached-exporter:v0.6.0\",\"resources\":{},\"serviceMonitor\":{\"enabled\":false,\"interval\":\"15s\"}},\"nodeSelector\":{},\"pdbMinAvailable\":2,\"podAnnotations\":{},\"replicaCount\":1,\"resources\":{\"requests\":{\"cpu\":\"50m\",\"memory\":\"64Mi\"}},\"securityContext\":{\"enabled\":false,\"fsGroup\":1001,\"runAsUser\":1001},\"serviceAnnotations\":{},\"tolerations\":{},\"updateStrategy\":{\"type\":\"RollingUpdate\"}}}\n"
+                },
+                "creationTimestamp": "2022-08-21T20:16:16Z",
+                "finalizers": [
+                    "helm.sdk.operatorframework.io/uninstall-release"
+                ],
+                "generation": 1,
+                "name": "memcached-sample05",
+                "namespace": "memcached-operator-system",
+                "resourceVersion": "2059",
+                "uid": "32919967-33e8-4ab8-8ec0-27a53dc3a483"
+            },
+            "spec": {
+                "AntiAffinity": "soft",
+                "affinity": {},
+                "extraContainers": "",
+                "extraVolumes": "",
+                "image": "memcached:1.5.20",
+                "kind": "StatefulSet",
+                "memcached": {
+                    "extendedOptions": "modern",
+                    "extraArgs": [],
+                    "maxItemMemory": 64,
+                    "verbosity": "v"
+                },
+                "metrics": {
+                    "enabled": false,
+                    "image": "quay.io/prometheus/memcached-exporter:v0.6.0",
+                    "resources": {},
+                    "serviceMonitor": {
+                        "enabled": false,
+                        "interval": "15s"
+                    }
+                },
+                "nodeSelector": {},
+                "pdbMinAvailable": 2,
+                "podAnnotations": {},
+                "replicaCount": 1,
+                "resources": {
+                    "requests": {
+                        "cpu": "50m",
+                        "memory": "64Mi"
+                    }
+                },
+                "securityContext": {
+                    "enabled": false,
+                    "fsGroup": 1001,
+                    "runAsUser": 1001
+                },
+                "serviceAnnotations": {},
+                "tolerations": {},
+                "updateStrategy": {
+                    "type": "RollingUpdate"
+                }
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:23Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:24Z",
+                        "message": "Memcached can be accessed via port 11211 on the following DNS name from within your cluster:\nmemcached-sample05.memcached-operator-system.svc.cluster.local\n\nIf you'd like to test your instance, forward the port locally:\n\n  export POD_NAME=$(kubectl get pods --namespace memcached-operator-system -l \"app.kubernetes.io/name=memcached,app.kubernetes.io/instance=memcached-sample05\" -o jsonpath=\"{.items[0].metadata.name}\")\n  kubectl port-forward $POD_NAME 11211\n\nIn another tab, attempt to set a key:\n\n  $ echo -e 'set mykey 0 60 5\\r\\nhello\\r' | nc localhost 11211\n\nYou should see:\n\n  STORED\n",
+                        "reason": "InstallSuccessful",
+                        "status": "True",
+                        "type": "Deployed"
+                    }
+                ],
+                "deployedRelease": {
+                    "manifest": "---\n# Source: memcached/templates/svc.yaml\napiVersion: v1\nkind: Service\nmetadata:\n  name: memcached-sample05\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample05\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\n  annotations:\n    {}\nspec:\n  clusterIP: None\n  ports:\n  - name: memcache\n    port: 11211\n    targetPort: memcache\n  selector:\n    app.kubernetes.io/name: memcached\n    app.kubernetes.io/instance: memcached-sample05\n---\n# Source: memcached/templates/statefulset.yaml\napiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: memcached-sample05\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample05\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\nspec:\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: memcached\n      app.kubernetes.io/instance: memcached-sample05\n  serviceName: memcached-sample05\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        app.kubernetes.io/name: memcached\n        app.kubernetes.io/instance: memcached-sample05\n    spec:\n      affinity:\n        podAntiAffinity:\n          preferredDuringSchedulingIgnoredDuringExecution:\n          - weight: 5\n            podAffinityTerm:\n              topologyKey: \"kubernetes.io/hostname\"\n              labelSelector:\n                matchLabels:\n                  app.kubernetes.io/name: memcached\n                  app.kubernetes.io/instance: memcached-sample05\n      containers:\n      - name: memcached-sample05\n        image: memcached:1.5.20\n        imagePullPolicy: \"\"\n        command:\n        - memcached\n        - -m 64\n        - -o\n        - modern\n        - -v\n        ports:\n        - name: memcache\n          containerPort: 11211\n        livenessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 30\n          timeoutSeconds: 5\n        readinessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 5\n          timeoutSeconds: 1\n        resources:\n          requests:\n            cpu: 50m\n            memory: 64Mi\n  updateStrategy:\n    type: RollingUpdate\n",
+                    "name": "memcached-sample05"
+                }
+            }
+        },
+        {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Memcached",
+            "metadata": {
+                "annotations": {
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"cache.example.com/v1alpha1\",\"kind\":\"Memcached\",\"metadata\":{\"annotations\":{},\"name\":\"memcached-sample06\",\"namespace\":\"memcached-operator-system\"},\"spec\":{\"AntiAffinity\":\"soft\",\"affinity\":{},\"extraContainers\":\"\",\"extraVolumes\":\"\",\"image\":\"memcached:1.5.20\",\"kind\":\"StatefulSet\",\"memcached\":{\"extendedOptions\":\"modern\",\"extraArgs\":[],\"maxItemMemory\":64,\"verbosity\":\"v\"},\"metrics\":{\"enabled\":false,\"image\":\"quay.io/prometheus/memcached-exporter:v0.6.0\",\"resources\":{},\"serviceMonitor\":{\"enabled\":false,\"interval\":\"15s\"}},\"nodeSelector\":{},\"pdbMinAvailable\":2,\"podAnnotations\":{},\"replicaCount\":1,\"resources\":{\"requests\":{\"cpu\":\"50m\",\"memory\":\"64Mi\"}},\"securityContext\":{\"enabled\":false,\"fsGroup\":1001,\"runAsUser\":1001},\"serviceAnnotations\":{},\"tolerations\":{},\"updateStrategy\":{\"type\":\"RollingUpdate\"}}}\n"
+                },
+                "creationTimestamp": "2022-08-21T20:16:16Z",
+                "finalizers": [
+                    "helm.sdk.operatorframework.io/uninstall-release"
+                ],
+                "generation": 1,
+                "name": "memcached-sample06",
+                "namespace": "memcached-operator-system",
+                "resourceVersion": "2085",
+                "uid": "d2eb977b-a7c4-4108-b02f-a7c331193276"
+            },
+            "spec": {
+                "AntiAffinity": "soft",
+                "affinity": {},
+                "extraContainers": "",
+                "extraVolumes": "",
+                "image": "memcached:1.5.20",
+                "kind": "StatefulSet",
+                "memcached": {
+                    "extendedOptions": "modern",
+                    "extraArgs": [],
+                    "maxItemMemory": 64,
+                    "verbosity": "v"
+                },
+                "metrics": {
+                    "enabled": false,
+                    "image": "quay.io/prometheus/memcached-exporter:v0.6.0",
+                    "resources": {},
+                    "serviceMonitor": {
+                        "enabled": false,
+                        "interval": "15s"
+                    }
+                },
+                "nodeSelector": {},
+                "pdbMinAvailable": 2,
+                "podAnnotations": {},
+                "replicaCount": 1,
+                "resources": {
+                    "requests": {
+                        "cpu": "50m",
+                        "memory": "64Mi"
+                    }
+                },
+                "securityContext": {
+                    "enabled": false,
+                    "fsGroup": 1001,
+                    "runAsUser": 1001
+                },
+                "serviceAnnotations": {},
+                "tolerations": {},
+                "updateStrategy": {
+                    "type": "RollingUpdate"
+                }
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:25Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:27Z",
+                        "message": "Memcached can be accessed via port 11211 on the following DNS name from within your cluster:\nmemcached-sample06.memcached-operator-system.svc.cluster.local\n\nIf you'd like to test your instance, forward the port locally:\n\n  export POD_NAME=$(kubectl get pods --namespace memcached-operator-system -l \"app.kubernetes.io/name=memcached,app.kubernetes.io/instance=memcached-sample06\" -o jsonpath=\"{.items[0].metadata.name}\")\n  kubectl port-forward $POD_NAME 11211\n\nIn another tab, attempt to set a key:\n\n  $ echo -e 'set mykey 0 60 5\\r\\nhello\\r' | nc localhost 11211\n\nYou should see:\n\n  STORED\n",
+                        "reason": "InstallSuccessful",
+                        "status": "True",
+                        "type": "Deployed"
+                    }
+                ],
+                "deployedRelease": {
+                    "manifest": "---\n# Source: memcached/templates/svc.yaml\napiVersion: v1\nkind: Service\nmetadata:\n  name: memcached-sample06\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample06\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\n  annotations:\n    {}\nspec:\n  clusterIP: None\n  ports:\n  - name: memcache\n    port: 11211\n    targetPort: memcache\n  selector:\n    app.kubernetes.io/name: memcached\n    app.kubernetes.io/instance: memcached-sample06\n---\n# Source: memcached/templates/statefulset.yaml\napiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: memcached-sample06\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample06\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\nspec:\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: memcached\n      app.kubernetes.io/instance: memcached-sample06\n  serviceName: memcached-sample06\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        app.kubernetes.io/name: memcached\n        app.kubernetes.io/instance: memcached-sample06\n    spec:\n      affinity:\n        podAntiAffinity:\n          preferredDuringSchedulingIgnoredDuringExecution:\n          - weight: 5\n            podAffinityTerm:\n              topologyKey: \"kubernetes.io/hostname\"\n              labelSelector:\n                matchLabels:\n                  app.kubernetes.io/name: memcached\n                  app.kubernetes.io/instance: memcached-sample06\n      containers:\n      - name: memcached-sample06\n        image: memcached:1.5.20\n        imagePullPolicy: \"\"\n        command:\n        - memcached\n        - -m 64\n        - -o\n        - modern\n        - -v\n        ports:\n        - name: memcache\n          containerPort: 11211\n        livenessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 30\n          timeoutSeconds: 5\n        readinessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 5\n          timeoutSeconds: 1\n        resources:\n          requests:\n            cpu: 50m\n            memory: 64Mi\n  updateStrategy:\n    type: RollingUpdate\n",
+                    "name": "memcached-sample06"
+                }
+            }
+        },
+        {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Memcached",
+            "metadata": {
+                "annotations": {
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"cache.example.com/v1alpha1\",\"kind\":\"Memcached\",\"metadata\":{\"annotations\":{},\"name\":\"memcached-sample07\",\"namespace\":\"memcached-operator-system\"},\"spec\":{\"AntiAffinity\":\"soft\",\"affinity\":{},\"extraContainers\":\"\",\"extraVolumes\":\"\",\"image\":\"memcached:1.5.20\",\"kind\":\"StatefulSet\",\"memcached\":{\"extendedOptions\":\"modern\",\"extraArgs\":[],\"maxItemMemory\":64,\"verbosity\":\"v\"},\"metrics\":{\"enabled\":false,\"image\":\"quay.io/prometheus/memcached-exporter:v0.6.0\",\"resources\":{},\"serviceMonitor\":{\"enabled\":false,\"interval\":\"15s\"}},\"nodeSelector\":{},\"pdbMinAvailable\":2,\"podAnnotations\":{},\"replicaCount\":1,\"resources\":{\"requests\":{\"cpu\":\"50m\",\"memory\":\"64Mi\"}},\"securityContext\":{\"enabled\":false,\"fsGroup\":1001,\"runAsUser\":1001},\"serviceAnnotations\":{},\"tolerations\":{},\"updateStrategy\":{\"type\":\"RollingUpdate\"}}}\n"
+                },
+                "creationTimestamp": "2022-08-21T20:16:17Z",
+                "finalizers": [
+                    "helm.sdk.operatorframework.io/uninstall-release"
+                ],
+                "generation": 1,
+                "name": "memcached-sample07",
+                "namespace": "memcached-operator-system",
+                "resourceVersion": "2111",
+                "uid": "e6cce2e8-c441-4df3-b0a8-8cebfba8254f"
+            },
+            "spec": {
+                "AntiAffinity": "soft",
+                "affinity": {},
+                "extraContainers": "",
+                "extraVolumes": "",
+                "image": "memcached:1.5.20",
+                "kind": "StatefulSet",
+                "memcached": {
+                    "extendedOptions": "modern",
+                    "extraArgs": [],
+                    "maxItemMemory": 64,
+                    "verbosity": "v"
+                },
+                "metrics": {
+                    "enabled": false,
+                    "image": "quay.io/prometheus/memcached-exporter:v0.6.0",
+                    "resources": {},
+                    "serviceMonitor": {
+                        "enabled": false,
+                        "interval": "15s"
+                    }
+                },
+                "nodeSelector": {},
+                "pdbMinAvailable": 2,
+                "podAnnotations": {},
+                "replicaCount": 1,
+                "resources": {
+                    "requests": {
+                        "cpu": "50m",
+                        "memory": "64Mi"
+                    }
+                },
+                "securityContext": {
+                    "enabled": false,
+                    "fsGroup": 1001,
+                    "runAsUser": 1001
+                },
+                "serviceAnnotations": {},
+                "tolerations": {},
+                "updateStrategy": {
+                    "type": "RollingUpdate"
+                }
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:27Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:28Z",
+                        "message": "Memcached can be accessed via port 11211 on the following DNS name from within your cluster:\nmemcached-sample07.memcached-operator-system.svc.cluster.local\n\nIf you'd like to test your instance, forward the port locally:\n\n  export POD_NAME=$(kubectl get pods --namespace memcached-operator-system -l \"app.kubernetes.io/name=memcached,app.kubernetes.io/instance=memcached-sample07\" -o jsonpath=\"{.items[0].metadata.name}\")\n  kubectl port-forward $POD_NAME 11211\n\nIn another tab, attempt to set a key:\n\n  $ echo -e 'set mykey 0 60 5\\r\\nhello\\r' | nc localhost 11211\n\nYou should see:\n\n  STORED\n",
+                        "reason": "InstallSuccessful",
+                        "status": "True",
+                        "type": "Deployed"
+                    }
+                ],
+                "deployedRelease": {
+                    "manifest": "---\n# Source: memcached/templates/svc.yaml\napiVersion: v1\nkind: Service\nmetadata:\n  name: memcached-sample07\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample07\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\n  annotations:\n    {}\nspec:\n  clusterIP: None\n  ports:\n  - name: memcache\n    port: 11211\n    targetPort: memcache\n  selector:\n    app.kubernetes.io/name: memcached\n    app.kubernetes.io/instance: memcached-sample07\n---\n# Source: memcached/templates/statefulset.yaml\napiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: memcached-sample07\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample07\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\nspec:\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: memcached\n      app.kubernetes.io/instance: memcached-sample07\n  serviceName: memcached-sample07\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        app.kubernetes.io/name: memcached\n        app.kubernetes.io/instance: memcached-sample07\n    spec:\n      affinity:\n        podAntiAffinity:\n          preferredDuringSchedulingIgnoredDuringExecution:\n          - weight: 5\n            podAffinityTerm:\n              topologyKey: \"kubernetes.io/hostname\"\n              labelSelector:\n                matchLabels:\n                  app.kubernetes.io/name: memcached\n                  app.kubernetes.io/instance: memcached-sample07\n      containers:\n      - name: memcached-sample07\n        image: memcached:1.5.20\n        imagePullPolicy: \"\"\n        command:\n        - memcached\n        - -m 64\n        - -o\n        - modern\n        - -v\n        ports:\n        - name: memcache\n          containerPort: 11211\n        livenessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 30\n          timeoutSeconds: 5\n        readinessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 5\n          timeoutSeconds: 1\n        resources:\n          requests:\n            cpu: 50m\n            memory: 64Mi\n  updateStrategy:\n    type: RollingUpdate\n",
+                    "name": "memcached-sample07"
+                }
+            }
+        },
+        {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Memcached",
+            "metadata": {
+                "annotations": {
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"cache.example.com/v1alpha1\",\"kind\":\"Memcached\",\"metadata\":{\"annotations\":{},\"name\":\"memcached-sample08\",\"namespace\":\"memcached-operator-system\"},\"spec\":{\"AntiAffinity\":\"soft\",\"affinity\":{},\"extraContainers\":\"\",\"extraVolumes\":\"\",\"image\":\"memcached:1.5.20\",\"kind\":\"StatefulSet\",\"memcached\":{\"extendedOptions\":\"modern\",\"extraArgs\":[],\"maxItemMemory\":64,\"verbosity\":\"v\"},\"metrics\":{\"enabled\":false,\"image\":\"quay.io/prometheus/memcached-exporter:v0.6.0\",\"resources\":{},\"serviceMonitor\":{\"enabled\":false,\"interval\":\"15s\"}},\"nodeSelector\":{},\"pdbMinAvailable\":2,\"podAnnotations\":{},\"replicaCount\":1,\"resources\":{\"requests\":{\"cpu\":\"50m\",\"memory\":\"64Mi\"}},\"securityContext\":{\"enabled\":false,\"fsGroup\":1001,\"runAsUser\":1001},\"serviceAnnotations\":{},\"tolerations\":{},\"updateStrategy\":{\"type\":\"RollingUpdate\"}}}\n"
+                },
+                "creationTimestamp": "2022-08-21T20:16:17Z",
+                "finalizers": [
+                    "helm.sdk.operatorframework.io/uninstall-release"
+                ],
+                "generation": 1,
+                "name": "memcached-sample08",
+                "namespace": "memcached-operator-system",
+                "resourceVersion": "2136",
+                "uid": "ab77e1ae-3c0d-4527-8892-734a06dc4444"
+            },
+            "spec": {
+                "AntiAffinity": "soft",
+                "affinity": {},
+                "extraContainers": "",
+                "extraVolumes": "",
+                "image": "memcached:1.5.20",
+                "kind": "StatefulSet",
+                "memcached": {
+                    "extendedOptions": "modern",
+                    "extraArgs": [],
+                    "maxItemMemory": 64,
+                    "verbosity": "v"
+                },
+                "metrics": {
+                    "enabled": false,
+                    "image": "quay.io/prometheus/memcached-exporter:v0.6.0",
+                    "resources": {},
+                    "serviceMonitor": {
+                        "enabled": false,
+                        "interval": "15s"
+                    }
+                },
+                "nodeSelector": {},
+                "pdbMinAvailable": 2,
+                "podAnnotations": {},
+                "replicaCount": 1,
+                "resources": {
+                    "requests": {
+                        "cpu": "50m",
+                        "memory": "64Mi"
+                    }
+                },
+                "securityContext": {
+                    "enabled": false,
+                    "fsGroup": 1001,
+                    "runAsUser": 1001
+                },
+                "serviceAnnotations": {},
+                "tolerations": {},
+                "updateStrategy": {
+                    "type": "RollingUpdate"
+                }
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:28Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:30Z",
+                        "message": "Memcached can be accessed via port 11211 on the following DNS name from within your cluster:\nmemcached-sample08.memcached-operator-system.svc.cluster.local\n\nIf you'd like to test your instance, forward the port locally:\n\n  export POD_NAME=$(kubectl get pods --namespace memcached-operator-system -l \"app.kubernetes.io/name=memcached,app.kubernetes.io/instance=memcached-sample08\" -o jsonpath=\"{.items[0].metadata.name}\")\n  kubectl port-forward $POD_NAME 11211\n\nIn another tab, attempt to set a key:\n\n  $ echo -e 'set mykey 0 60 5\\r\\nhello\\r' | nc localhost 11211\n\nYou should see:\n\n  STORED\n",
+                        "reason": "InstallSuccessful",
+                        "status": "True",
+                        "type": "Deployed"
+                    }
+                ],
+                "deployedRelease": {
+                    "manifest": "---\n# Source: memcached/templates/svc.yaml\napiVersion: v1\nkind: Service\nmetadata:\n  name: memcached-sample08\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample08\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\n  annotations:\n    {}\nspec:\n  clusterIP: None\n  ports:\n  - name: memcache\n    port: 11211\n    targetPort: memcache\n  selector:\n    app.kubernetes.io/name: memcached\n    app.kubernetes.io/instance: memcached-sample08\n---\n# Source: memcached/templates/statefulset.yaml\napiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: memcached-sample08\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample08\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\nspec:\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: memcached\n      app.kubernetes.io/instance: memcached-sample08\n  serviceName: memcached-sample08\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        app.kubernetes.io/name: memcached\n        app.kubernetes.io/instance: memcached-sample08\n    spec:\n      affinity:\n        podAntiAffinity:\n          preferredDuringSchedulingIgnoredDuringExecution:\n          - weight: 5\n            podAffinityTerm:\n              topologyKey: \"kubernetes.io/hostname\"\n              labelSelector:\n                matchLabels:\n                  app.kubernetes.io/name: memcached\n                  app.kubernetes.io/instance: memcached-sample08\n      containers:\n      - name: memcached-sample08\n        image: memcached:1.5.20\n        imagePullPolicy: \"\"\n        command:\n        - memcached\n        - -m 64\n        - -o\n        - modern\n        - -v\n        ports:\n        - name: memcache\n          containerPort: 11211\n        livenessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 30\n          timeoutSeconds: 5\n        readinessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 5\n          timeoutSeconds: 1\n        resources:\n          requests:\n            cpu: 50m\n            memory: 64Mi\n  updateStrategy:\n    type: RollingUpdate\n",
+                    "name": "memcached-sample08"
+                }
+            }
+        },
+        {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Memcached",
+            "metadata": {
+                "annotations": {
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"cache.example.com/v1alpha1\",\"kind\":\"Memcached\",\"metadata\":{\"annotations\":{},\"name\":\"memcached-sample09\",\"namespace\":\"memcached-operator-system\"},\"spec\":{\"AntiAffinity\":\"soft\",\"affinity\":{},\"extraContainers\":\"\",\"extraVolumes\":\"\",\"image\":\"memcached:1.5.20\",\"kind\":\"StatefulSet\",\"memcached\":{\"extendedOptions\":\"modern\",\"extraArgs\":[],\"maxItemMemory\":64,\"verbosity\":\"v\"},\"metrics\":{\"enabled\":false,\"image\":\"quay.io/prometheus/memcached-exporter:v0.6.0\",\"resources\":{},\"serviceMonitor\":{\"enabled\":false,\"interval\":\"15s\"}},\"nodeSelector\":{},\"pdbMinAvailable\":2,\"podAnnotations\":{},\"replicaCount\":1,\"resources\":{\"requests\":{\"cpu\":\"50m\",\"memory\":\"64Mi\"}},\"securityContext\":{\"enabled\":false,\"fsGroup\":1001,\"runAsUser\":1001},\"serviceAnnotations\":{},\"tolerations\":{},\"updateStrategy\":{\"type\":\"RollingUpdate\"}}}\n"
+                },
+                "creationTimestamp": "2022-08-21T20:16:17Z",
+                "finalizers": [
+                    "helm.sdk.operatorframework.io/uninstall-release"
+                ],
+                "generation": 1,
+                "name": "memcached-sample09",
+                "namespace": "memcached-operator-system",
+                "resourceVersion": "2159",
+                "uid": "6177ad1d-4af5-4960-abd1-78e316552601"
+            },
+            "spec": {
+                "AntiAffinity": "soft",
+                "affinity": {},
+                "extraContainers": "",
+                "extraVolumes": "",
+                "image": "memcached:1.5.20",
+                "kind": "StatefulSet",
+                "memcached": {
+                    "extendedOptions": "modern",
+                    "extraArgs": [],
+                    "maxItemMemory": 64,
+                    "verbosity": "v"
+                },
+                "metrics": {
+                    "enabled": false,
+                    "image": "quay.io/prometheus/memcached-exporter:v0.6.0",
+                    "resources": {},
+                    "serviceMonitor": {
+                        "enabled": false,
+                        "interval": "15s"
+                    }
+                },
+                "nodeSelector": {},
+                "pdbMinAvailable": 2,
+                "podAnnotations": {},
+                "replicaCount": 1,
+                "resources": {
+                    "requests": {
+                        "cpu": "50m",
+                        "memory": "64Mi"
+                    }
+                },
+                "securityContext": {
+                    "enabled": false,
+                    "fsGroup": 1001,
+                    "runAsUser": 1001
+                },
+                "serviceAnnotations": {},
+                "tolerations": {},
+                "updateStrategy": {
+                    "type": "RollingUpdate"
+                }
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:30Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:31Z",
+                        "message": "Memcached can be accessed via port 11211 on the following DNS name from within your cluster:\nmemcached-sample09.memcached-operator-system.svc.cluster.local\n\nIf you'd like to test your instance, forward the port locally:\n\n  export POD_NAME=$(kubectl get pods --namespace memcached-operator-system -l \"app.kubernetes.io/name=memcached,app.kubernetes.io/instance=memcached-sample09\" -o jsonpath=\"{.items[0].metadata.name}\")\n  kubectl port-forward $POD_NAME 11211\n\nIn another tab, attempt to set a key:\n\n  $ echo -e 'set mykey 0 60 5\\r\\nhello\\r' | nc localhost 11211\n\nYou should see:\n\n  STORED\n",
+                        "reason": "InstallSuccessful",
+                        "status": "True",
+                        "type": "Deployed"
+                    }
+                ],
+                "deployedRelease": {
+                    "manifest": "---\n# Source: memcached/templates/svc.yaml\napiVersion: v1\nkind: Service\nmetadata:\n  name: memcached-sample09\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample09\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\n  annotations:\n    {}\nspec:\n  clusterIP: None\n  ports:\n  - name: memcache\n    port: 11211\n    targetPort: memcache\n  selector:\n    app.kubernetes.io/name: memcached\n    app.kubernetes.io/instance: memcached-sample09\n---\n# Source: memcached/templates/statefulset.yaml\napiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: memcached-sample09\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample09\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\nspec:\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: memcached\n      app.kubernetes.io/instance: memcached-sample09\n  serviceName: memcached-sample09\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        app.kubernetes.io/name: memcached\n        app.kubernetes.io/instance: memcached-sample09\n    spec:\n      affinity:\n        podAntiAffinity:\n          preferredDuringSchedulingIgnoredDuringExecution:\n          - weight: 5\n            podAffinityTerm:\n              topologyKey: \"kubernetes.io/hostname\"\n              labelSelector:\n                matchLabels:\n                  app.kubernetes.io/name: memcached\n                  app.kubernetes.io/instance: memcached-sample09\n      containers:\n      - name: memcached-sample09\n        image: memcached:1.5.20\n        imagePullPolicy: \"\"\n        command:\n        - memcached\n        - -m 64\n        - -o\n        - modern\n        - -v\n        ports:\n        - name: memcache\n          containerPort: 11211\n        livenessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 30\n          timeoutSeconds: 5\n        readinessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 5\n          timeoutSeconds: 1\n        resources:\n          requests:\n            cpu: 50m\n            memory: 64Mi\n  updateStrategy:\n    type: RollingUpdate\n",
+                    "name": "memcached-sample09"
+                }
+            }
+        },
+        {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Memcached",
+            "metadata": {
+                "annotations": {
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"cache.example.com/v1alpha1\",\"kind\":\"Memcached\",\"metadata\":{\"annotations\":{},\"name\":\"memcached-sample10\",\"namespace\":\"memcached-operator-system\"},\"spec\":{\"AntiAffinity\":\"soft\",\"affinity\":{},\"extraContainers\":\"\",\"extraVolumes\":\"\",\"image\":\"memcached:1.5.20\",\"kind\":\"StatefulSet\",\"memcached\":{\"extendedOptions\":\"modern\",\"extraArgs\":[],\"maxItemMemory\":64,\"verbosity\":\"v\"},\"metrics\":{\"enabled\":false,\"image\":\"quay.io/prometheus/memcached-exporter:v0.6.0\",\"resources\":{},\"serviceMonitor\":{\"enabled\":false,\"interval\":\"15s\"}},\"nodeSelector\":{},\"pdbMinAvailable\":2,\"podAnnotations\":{},\"replicaCount\":1,\"resources\":{\"requests\":{\"cpu\":\"50m\",\"memory\":\"64Mi\"}},\"securityContext\":{\"enabled\":false,\"fsGroup\":1001,\"runAsUser\":1001},\"serviceAnnotations\":{},\"tolerations\":{},\"updateStrategy\":{\"type\":\"RollingUpdate\"}}}\n"
+                },
+                "creationTimestamp": "2022-08-21T20:16:18Z",
+                "finalizers": [
+                    "helm.sdk.operatorframework.io/uninstall-release"
+                ],
+                "generation": 1,
+                "name": "memcached-sample10",
+                "namespace": "memcached-operator-system",
+                "resourceVersion": "2184",
+                "uid": "aab82472-5b53-43d4-9c6e-8f0614aac727"
+            },
+            "spec": {
+                "AntiAffinity": "soft",
+                "affinity": {},
+                "extraContainers": "",
+                "extraVolumes": "",
+                "image": "memcached:1.5.20",
+                "kind": "StatefulSet",
+                "memcached": {
+                    "extendedOptions": "modern",
+                    "extraArgs": [],
+                    "maxItemMemory": 64,
+                    "verbosity": "v"
+                },
+                "metrics": {
+                    "enabled": false,
+                    "image": "quay.io/prometheus/memcached-exporter:v0.6.0",
+                    "resources": {},
+                    "serviceMonitor": {
+                        "enabled": false,
+                        "interval": "15s"
+                    }
+                },
+                "nodeSelector": {},
+                "pdbMinAvailable": 2,
+                "podAnnotations": {},
+                "replicaCount": 1,
+                "resources": {
+                    "requests": {
+                        "cpu": "50m",
+                        "memory": "64Mi"
+                    }
+                },
+                "securityContext": {
+                    "enabled": false,
+                    "fsGroup": 1001,
+                    "runAsUser": 1001
+                },
+                "serviceAnnotations": {},
+                "tolerations": {},
+                "updateStrategy": {
+                    "type": "RollingUpdate"
+                }
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:31Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:33Z",
+                        "message": "Memcached can be accessed via port 11211 on the following DNS name from within your cluster:\nmemcached-sample10.memcached-operator-system.svc.cluster.local\n\nIf you'd like to test your instance, forward the port locally:\n\n  export POD_NAME=$(kubectl get pods --namespace memcached-operator-system -l \"app.kubernetes.io/name=memcached,app.kubernetes.io/instance=memcached-sample10\" -o jsonpath=\"{.items[0].metadata.name}\")\n  kubectl port-forward $POD_NAME 11211\n\nIn another tab, attempt to set a key:\n\n  $ echo -e 'set mykey 0 60 5\\r\\nhello\\r' | nc localhost 11211\n\nYou should see:\n\n  STORED\n",
+                        "reason": "InstallSuccessful",
+                        "status": "True",
+                        "type": "Deployed"
+                    }
+                ],
+                "deployedRelease": {
+                    "manifest": "---\n# Source: memcached/templates/svc.yaml\napiVersion: v1\nkind: Service\nmetadata:\n  name: memcached-sample10\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample10\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\n  annotations:\n    {}\nspec:\n  clusterIP: None\n  ports:\n  - name: memcache\n    port: 11211\n    targetPort: memcache\n  selector:\n    app.kubernetes.io/name: memcached\n    app.kubernetes.io/instance: memcached-sample10\n---\n# Source: memcached/templates/statefulset.yaml\napiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: memcached-sample10\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample10\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\nspec:\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: memcached\n      app.kubernetes.io/instance: memcached-sample10\n  serviceName: memcached-sample10\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        app.kubernetes.io/name: memcached\n        app.kubernetes.io/instance: memcached-sample10\n    spec:\n      affinity:\n        podAntiAffinity:\n          preferredDuringSchedulingIgnoredDuringExecution:\n          - weight: 5\n            podAffinityTerm:\n              topologyKey: \"kubernetes.io/hostname\"\n              labelSelector:\n                matchLabels:\n                  app.kubernetes.io/name: memcached\n                  app.kubernetes.io/instance: memcached-sample10\n      containers:\n      - name: memcached-sample10\n        image: memcached:1.5.20\n        imagePullPolicy: \"\"\n        command:\n        - memcached\n        - -m 64\n        - -o\n        - modern\n        - -v\n        ports:\n        - name: memcache\n          containerPort: 11211\n        livenessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 30\n          timeoutSeconds: 5\n        readinessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 5\n          timeoutSeconds: 1\n        resources:\n          requests:\n            cpu: 50m\n            memory: 64Mi\n  updateStrategy:\n    type: RollingUpdate\n",
+                    "name": "memcached-sample10"
+                }
+            }
+        },
+        {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Memcached",
+            "metadata": {
+                "annotations": {
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"cache.example.com/v1alpha1\",\"kind\":\"Memcached\",\"metadata\":{\"annotations\":{},\"name\":\"memcached-sample11\",\"namespace\":\"memcached-operator-system\"},\"spec\":{\"AntiAffinity\":\"soft\",\"affinity\":{},\"extraContainers\":\"\",\"extraVolumes\":\"\",\"image\":\"memcached:1.5.20\",\"kind\":\"StatefulSet\",\"memcached\":{\"extendedOptions\":\"modern\",\"extraArgs\":[],\"maxItemMemory\":64,\"verbosity\":\"v\"},\"metrics\":{\"enabled\":false,\"image\":\"quay.io/prometheus/memcached-exporter:v0.6.0\",\"resources\":{},\"serviceMonitor\":{\"enabled\":false,\"interval\":\"15s\"}},\"nodeSelector\":{},\"pdbMinAvailable\":2,\"podAnnotations\":{},\"replicaCount\":1,\"resources\":{\"requests\":{\"cpu\":\"50m\",\"memory\":\"64Mi\"}},\"securityContext\":{\"enabled\":false,\"fsGroup\":1001,\"runAsUser\":1001},\"serviceAnnotations\":{},\"tolerations\":{},\"updateStrategy\":{\"type\":\"RollingUpdate\"}}}\n"
+                },
+                "creationTimestamp": "2022-08-21T20:16:18Z",
+                "finalizers": [
+                    "helm.sdk.operatorframework.io/uninstall-release"
+                ],
+                "generation": 1,
+                "name": "memcached-sample11",
+                "namespace": "memcached-operator-system",
+                "resourceVersion": "2211",
+                "uid": "f75cc321-cdc1-4d0f-9a88-02d22ddd2f47"
+            },
+            "spec": {
+                "AntiAffinity": "soft",
+                "affinity": {},
+                "extraContainers": "",
+                "extraVolumes": "",
+                "image": "memcached:1.5.20",
+                "kind": "StatefulSet",
+                "memcached": {
+                    "extendedOptions": "modern",
+                    "extraArgs": [],
+                    "maxItemMemory": 64,
+                    "verbosity": "v"
+                },
+                "metrics": {
+                    "enabled": false,
+                    "image": "quay.io/prometheus/memcached-exporter:v0.6.0",
+                    "resources": {},
+                    "serviceMonitor": {
+                        "enabled": false,
+                        "interval": "15s"
+                    }
+                },
+                "nodeSelector": {},
+                "pdbMinAvailable": 2,
+                "podAnnotations": {},
+                "replicaCount": 1,
+                "resources": {
+                    "requests": {
+                        "cpu": "50m",
+                        "memory": "64Mi"
+                    }
+                },
+                "securityContext": {
+                    "enabled": false,
+                    "fsGroup": 1001,
+                    "runAsUser": 1001
+                },
+                "serviceAnnotations": {},
+                "tolerations": {},
+                "updateStrategy": {
+                    "type": "RollingUpdate"
+                }
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:34Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:36Z",
+                        "message": "Memcached can be accessed via port 11211 on the following DNS name from within your cluster:\nmemcached-sample11.memcached-operator-system.svc.cluster.local\n\nIf you'd like to test your instance, forward the port locally:\n\n  export POD_NAME=$(kubectl get pods --namespace memcached-operator-system -l \"app.kubernetes.io/name=memcached,app.kubernetes.io/instance=memcached-sample11\" -o jsonpath=\"{.items[0].metadata.name}\")\n  kubectl port-forward $POD_NAME 11211\n\nIn another tab, attempt to set a key:\n\n  $ echo -e 'set mykey 0 60 5\\r\\nhello\\r' | nc localhost 11211\n\nYou should see:\n\n  STORED\n",
+                        "reason": "InstallSuccessful",
+                        "status": "True",
+                        "type": "Deployed"
+                    }
+                ],
+                "deployedRelease": {
+                    "manifest": "---\n# Source: memcached/templates/svc.yaml\napiVersion: v1\nkind: Service\nmetadata:\n  name: memcached-sample11\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample11\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\n  annotations:\n    {}\nspec:\n  clusterIP: None\n  ports:\n  - name: memcache\n    port: 11211\n    targetPort: memcache\n  selector:\n    app.kubernetes.io/name: memcached\n    app.kubernetes.io/instance: memcached-sample11\n---\n# Source: memcached/templates/statefulset.yaml\napiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: memcached-sample11\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample11\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\nspec:\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: memcached\n      app.kubernetes.io/instance: memcached-sample11\n  serviceName: memcached-sample11\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        app.kubernetes.io/name: memcached\n        app.kubernetes.io/instance: memcached-sample11\n    spec:\n      affinity:\n        podAntiAffinity:\n          preferredDuringSchedulingIgnoredDuringExecution:\n          - weight: 5\n            podAffinityTerm:\n              topologyKey: \"kubernetes.io/hostname\"\n              labelSelector:\n                matchLabels:\n                  app.kubernetes.io/name: memcached\n                  app.kubernetes.io/instance: memcached-sample11\n      containers:\n      - name: memcached-sample11\n        image: memcached:1.5.20\n        imagePullPolicy: \"\"\n        command:\n        - memcached\n        - -m 64\n        - -o\n        - modern\n        - -v\n        ports:\n        - name: memcache\n          containerPort: 11211\n        livenessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 30\n          timeoutSeconds: 5\n        readinessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 5\n          timeoutSeconds: 1\n        resources:\n          requests:\n            cpu: 50m\n            memory: 64Mi\n  updateStrategy:\n    type: RollingUpdate\n",
+                    "name": "memcached-sample11"
+                }
+            }
+        },
+        {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Memcached",
+            "metadata": {
+                "annotations": {
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"cache.example.com/v1alpha1\",\"kind\":\"Memcached\",\"metadata\":{\"annotations\":{},\"name\":\"memcached-sample12\",\"namespace\":\"memcached-operator-system\"},\"spec\":{\"AntiAffinity\":\"soft\",\"affinity\":{},\"extraContainers\":\"\",\"extraVolumes\":\"\",\"image\":\"memcached:1.5.20\",\"kind\":\"StatefulSet\",\"memcached\":{\"extendedOptions\":\"modern\",\"extraArgs\":[],\"maxItemMemory\":64,\"verbosity\":\"v\"},\"metrics\":{\"enabled\":false,\"image\":\"quay.io/prometheus/memcached-exporter:v0.6.0\",\"resources\":{},\"serviceMonitor\":{\"enabled\":false,\"interval\":\"15s\"}},\"nodeSelector\":{},\"pdbMinAvailable\":2,\"podAnnotations\":{},\"replicaCount\":1,\"resources\":{\"requests\":{\"cpu\":\"50m\",\"memory\":\"64Mi\"}},\"securityContext\":{\"enabled\":false,\"fsGroup\":1001,\"runAsUser\":1001},\"serviceAnnotations\":{},\"tolerations\":{},\"updateStrategy\":{\"type\":\"RollingUpdate\"}}}\n"
+                },
+                "creationTimestamp": "2022-08-21T20:16:18Z",
+                "finalizers": [
+                    "helm.sdk.operatorframework.io/uninstall-release"
+                ],
+                "generation": 1,
+                "name": "memcached-sample12",
+                "namespace": "memcached-operator-system",
+                "resourceVersion": "2237",
+                "uid": "aa71a036-c0e9-475e-965e-09d9ffa289f8"
+            },
+            "spec": {
+                "AntiAffinity": "soft",
+                "affinity": {},
+                "extraContainers": "",
+                "extraVolumes": "",
+                "image": "memcached:1.5.20",
+                "kind": "StatefulSet",
+                "memcached": {
+                    "extendedOptions": "modern",
+                    "extraArgs": [],
+                    "maxItemMemory": 64,
+                    "verbosity": "v"
+                },
+                "metrics": {
+                    "enabled": false,
+                    "image": "quay.io/prometheus/memcached-exporter:v0.6.0",
+                    "resources": {},
+                    "serviceMonitor": {
+                        "enabled": false,
+                        "interval": "15s"
+                    }
+                },
+                "nodeSelector": {},
+                "pdbMinAvailable": 2,
+                "podAnnotations": {},
+                "replicaCount": 1,
+                "resources": {
+                    "requests": {
+                        "cpu": "50m",
+                        "memory": "64Mi"
+                    }
+                },
+                "securityContext": {
+                    "enabled": false,
+                    "fsGroup": 1001,
+                    "runAsUser": 1001
+                },
+                "serviceAnnotations": {},
+                "tolerations": {},
+                "updateStrategy": {
+                    "type": "RollingUpdate"
+                }
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:36Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:37Z",
+                        "message": "Memcached can be accessed via port 11211 on the following DNS name from within your cluster:\nmemcached-sample12.memcached-operator-system.svc.cluster.local\n\nIf you'd like to test your instance, forward the port locally:\n\n  export POD_NAME=$(kubectl get pods --namespace memcached-operator-system -l \"app.kubernetes.io/name=memcached,app.kubernetes.io/instance=memcached-sample12\" -o jsonpath=\"{.items[0].metadata.name}\")\n  kubectl port-forward $POD_NAME 11211\n\nIn another tab, attempt to set a key:\n\n  $ echo -e 'set mykey 0 60 5\\r\\nhello\\r' | nc localhost 11211\n\nYou should see:\n\n  STORED\n",
+                        "reason": "InstallSuccessful",
+                        "status": "True",
+                        "type": "Deployed"
+                    }
+                ],
+                "deployedRelease": {
+                    "manifest": "---\n# Source: memcached/templates/svc.yaml\napiVersion: v1\nkind: Service\nmetadata:\n  name: memcached-sample12\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample12\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\n  annotations:\n    {}\nspec:\n  clusterIP: None\n  ports:\n  - name: memcache\n    port: 11211\n    targetPort: memcache\n  selector:\n    app.kubernetes.io/name: memcached\n    app.kubernetes.io/instance: memcached-sample12\n---\n# Source: memcached/templates/statefulset.yaml\napiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: memcached-sample12\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample12\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\nspec:\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: memcached\n      app.kubernetes.io/instance: memcached-sample12\n  serviceName: memcached-sample12\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        app.kubernetes.io/name: memcached\n        app.kubernetes.io/instance: memcached-sample12\n    spec:\n      affinity:\n        podAntiAffinity:\n          preferredDuringSchedulingIgnoredDuringExecution:\n          - weight: 5\n            podAffinityTerm:\n              topologyKey: \"kubernetes.io/hostname\"\n              labelSelector:\n                matchLabels:\n                  app.kubernetes.io/name: memcached\n                  app.kubernetes.io/instance: memcached-sample12\n      containers:\n      - name: memcached-sample12\n        image: memcached:1.5.20\n        imagePullPolicy: \"\"\n        command:\n        - memcached\n        - -m 64\n        - -o\n        - modern\n        - -v\n        ports:\n        - name: memcache\n          containerPort: 11211\n        livenessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 30\n          timeoutSeconds: 5\n        readinessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 5\n          timeoutSeconds: 1\n        resources:\n          requests:\n            cpu: 50m\n            memory: 64Mi\n  updateStrategy:\n    type: RollingUpdate\n",
+                    "name": "memcached-sample12"
+                }
+            }
+        },
+        {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Memcached",
+            "metadata": {
+                "annotations": {
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"cache.example.com/v1alpha1\",\"kind\":\"Memcached\",\"metadata\":{\"annotations\":{},\"name\":\"memcached-sample13\",\"namespace\":\"memcached-operator-system\"},\"spec\":{\"AntiAffinity\":\"soft\",\"affinity\":{},\"extraContainers\":\"\",\"extraVolumes\":\"\",\"image\":\"memcached:1.5.20\",\"kind\":\"StatefulSet\",\"memcached\":{\"extendedOptions\":\"modern\",\"extraArgs\":[],\"maxItemMemory\":64,\"verbosity\":\"v\"},\"metrics\":{\"enabled\":false,\"image\":\"quay.io/prometheus/memcached-exporter:v0.6.0\",\"resources\":{},\"serviceMonitor\":{\"enabled\":false,\"interval\":\"15s\"}},\"nodeSelector\":{},\"pdbMinAvailable\":2,\"podAnnotations\":{},\"replicaCount\":1,\"resources\":{\"requests\":{\"cpu\":\"50m\",\"memory\":\"64Mi\"}},\"securityContext\":{\"enabled\":false,\"fsGroup\":1001,\"runAsUser\":1001},\"serviceAnnotations\":{},\"tolerations\":{},\"updateStrategy\":{\"type\":\"RollingUpdate\"}}}\n"
+                },
+                "creationTimestamp": "2022-08-21T20:16:18Z",
+                "finalizers": [
+                    "helm.sdk.operatorframework.io/uninstall-release"
+                ],
+                "generation": 1,
+                "name": "memcached-sample13",
+                "namespace": "memcached-operator-system",
+                "resourceVersion": "2263",
+                "uid": "0f58e6f9-7da4-4b43-afee-2207948100f1"
+            },
+            "spec": {
+                "AntiAffinity": "soft",
+                "affinity": {},
+                "extraContainers": "",
+                "extraVolumes": "",
+                "image": "memcached:1.5.20",
+                "kind": "StatefulSet",
+                "memcached": {
+                    "extendedOptions": "modern",
+                    "extraArgs": [],
+                    "maxItemMemory": 64,
+                    "verbosity": "v"
+                },
+                "metrics": {
+                    "enabled": false,
+                    "image": "quay.io/prometheus/memcached-exporter:v0.6.0",
+                    "resources": {},
+                    "serviceMonitor": {
+                        "enabled": false,
+                        "interval": "15s"
+                    }
+                },
+                "nodeSelector": {},
+                "pdbMinAvailable": 2,
+                "podAnnotations": {},
+                "replicaCount": 1,
+                "resources": {
+                    "requests": {
+                        "cpu": "50m",
+                        "memory": "64Mi"
+                    }
+                },
+                "securityContext": {
+                    "enabled": false,
+                    "fsGroup": 1001,
+                    "runAsUser": 1001
+                },
+                "serviceAnnotations": {},
+                "tolerations": {},
+                "updateStrategy": {
+                    "type": "RollingUpdate"
+                }
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:37Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:38Z",
+                        "message": "Memcached can be accessed via port 11211 on the following DNS name from within your cluster:\nmemcached-sample13.memcached-operator-system.svc.cluster.local\n\nIf you'd like to test your instance, forward the port locally:\n\n  export POD_NAME=$(kubectl get pods --namespace memcached-operator-system -l \"app.kubernetes.io/name=memcached,app.kubernetes.io/instance=memcached-sample13\" -o jsonpath=\"{.items[0].metadata.name}\")\n  kubectl port-forward $POD_NAME 11211\n\nIn another tab, attempt to set a key:\n\n  $ echo -e 'set mykey 0 60 5\\r\\nhello\\r' | nc localhost 11211\n\nYou should see:\n\n  STORED\n",
+                        "reason": "InstallSuccessful",
+                        "status": "True",
+                        "type": "Deployed"
+                    }
+                ],
+                "deployedRelease": {
+                    "manifest": "---\n# Source: memcached/templates/svc.yaml\napiVersion: v1\nkind: Service\nmetadata:\n  name: memcached-sample13\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample13\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\n  annotations:\n    {}\nspec:\n  clusterIP: None\n  ports:\n  - name: memcache\n    port: 11211\n    targetPort: memcache\n  selector:\n    app.kubernetes.io/name: memcached\n    app.kubernetes.io/instance: memcached-sample13\n---\n# Source: memcached/templates/statefulset.yaml\napiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: memcached-sample13\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample13\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\nspec:\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: memcached\n      app.kubernetes.io/instance: memcached-sample13\n  serviceName: memcached-sample13\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        app.kubernetes.io/name: memcached\n        app.kubernetes.io/instance: memcached-sample13\n    spec:\n      affinity:\n        podAntiAffinity:\n          preferredDuringSchedulingIgnoredDuringExecution:\n          - weight: 5\n            podAffinityTerm:\n              topologyKey: \"kubernetes.io/hostname\"\n              labelSelector:\n                matchLabels:\n                  app.kubernetes.io/name: memcached\n                  app.kubernetes.io/instance: memcached-sample13\n      containers:\n      - name: memcached-sample13\n        image: memcached:1.5.20\n        imagePullPolicy: \"\"\n        command:\n        - memcached\n        - -m 64\n        - -o\n        - modern\n        - -v\n        ports:\n        - name: memcache\n          containerPort: 11211\n        livenessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 30\n          timeoutSeconds: 5\n        readinessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 5\n          timeoutSeconds: 1\n        resources:\n          requests:\n            cpu: 50m\n            memory: 64Mi\n  updateStrategy:\n    type: RollingUpdate\n",
+                    "name": "memcached-sample13"
+                }
+            }
+        },
+        {
+            "apiVersion": "cache.example.com/v1alpha1",
+            "kind": "Memcached",
+            "metadata": {
+                "annotations": {
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"cache.example.com/v1alpha1\",\"kind\":\"Memcached\",\"metadata\":{\"annotations\":{},\"name\":\"memcached-sample14\",\"namespace\":\"memcached-operator-system\"},\"spec\":{\"AntiAffinity\":\"soft\",\"affinity\":{},\"extraContainers\":\"\",\"extraVolumes\":\"\",\"image\":\"memcached:1.5.20\",\"kind\":\"StatefulSet\",\"memcached\":{\"extendedOptions\":\"modern\",\"extraArgs\":[],\"maxItemMemory\":64,\"verbosity\":\"v\"},\"metrics\":{\"enabled\":false,\"image\":\"quay.io/prometheus/memcached-exporter:v0.6.0\",\"resources\":{},\"serviceMonitor\":{\"enabled\":false,\"interval\":\"15s\"}},\"nodeSelector\":{},\"pdbMinAvailable\":2,\"podAnnotations\":{},\"replicaCount\":1,\"resources\":{\"requests\":{\"cpu\":\"50m\",\"memory\":\"64Mi\"}},\"securityContext\":{\"enabled\":false,\"fsGroup\":1001,\"runAsUser\":1001},\"serviceAnnotations\":{},\"tolerations\":{},\"updateStrategy\":{\"type\":\"RollingUpdate\"}}}\n"
+                },
+                "creationTimestamp": "2022-08-21T20:16:19Z",
+                "finalizers": [
+                    "helm.sdk.operatorframework.io/uninstall-release"
+                ],
+                "generation": 1,
+                "name": "memcached-sample14",
+                "namespace": "memcached-operator-system",
+                "resourceVersion": "2288",
+                "uid": "e444d637-673b-4799-832a-d0486034e9cd"
+            },
+            "spec": {
+                "AntiAffinity": "soft",
+                "affinity": {},
+                "extraContainers": "",
+                "extraVolumes": "",
+                "image": "memcached:1.5.20",
+                "kind": "StatefulSet",
+                "memcached": {
+                    "extendedOptions": "modern",
+                    "extraArgs": [],
+                    "maxItemMemory": 64,
+                    "verbosity": "v"
+                },
+                "metrics": {
+                    "enabled": false,
+                    "image": "quay.io/prometheus/memcached-exporter:v0.6.0",
+                    "resources": {},
+                    "serviceMonitor": {
+                        "enabled": false,
+                        "interval": "15s"
+                    }
+                },
+                "nodeSelector": {},
+                "pdbMinAvailable": 2,
+                "podAnnotations": {},
+                "replicaCount": 1,
+                "resources": {
+                    "requests": {
+                        "cpu": "50m",
+                        "memory": "64Mi"
+                    }
+                },
+                "securityContext": {
+                    "enabled": false,
+                    "fsGroup": 1001,
+                    "runAsUser": 1001
+                },
+                "serviceAnnotations": {},
+                "tolerations": {},
+                "updateStrategy": {
+                    "type": "RollingUpdate"
+                }
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:38Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastTransitionTime": "2022-08-21T20:16:40Z",
+                        "message": "Memcached can be accessed via port 11211 on the following DNS name from within your cluster:\nmemcached-sample14.memcached-operator-system.svc.cluster.local\n\nIf you'd like to test your instance, forward the port locally:\n\n  export POD_NAME=$(kubectl get pods --namespace memcached-operator-system -l \"app.kubernetes.io/name=memcached,app.kubernetes.io/instance=memcached-sample14\" -o jsonpath=\"{.items[0].metadata.name}\")\n  kubectl port-forward $POD_NAME 11211\n\nIn another tab, attempt to set a key:\n\n  $ echo -e 'set mykey 0 60 5\\r\\nhello\\r' | nc localhost 11211\n\nYou should see:\n\n  STORED\n",
+                        "reason": "InstallSuccessful",
+                        "status": "True",
+                        "type": "Deployed"
+                    }
+                ],
+                "deployedRelease": {
+                    "manifest": "---\n# Source: memcached/templates/svc.yaml\napiVersion: v1\nkind: Service\nmetadata:\n  name: memcached-sample14\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample14\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\n  annotations:\n    {}\nspec:\n  clusterIP: None\n  ports:\n  - name: memcache\n    port: 11211\n    targetPort: memcache\n  selector:\n    app.kubernetes.io/name: memcached\n    app.kubernetes.io/instance: memcached-sample14\n---\n# Source: memcached/templates/statefulset.yaml\napiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: memcached-sample14\n  namespace: memcached-operator-system\n  labels:\n    app.kubernetes.io/name: memcached\n    helm.sh/chart: memcached-0.0.1\n    app.kubernetes.io/instance: memcached-sample14\n    app.kubernetes.io/version: \"1.5.20\"\n    app.kubernetes.io/managed-by: Helm\nspec:\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: memcached\n      app.kubernetes.io/instance: memcached-sample14\n  serviceName: memcached-sample14\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        app.kubernetes.io/name: memcached\n        app.kubernetes.io/instance: memcached-sample14\n    spec:\n      affinity:\n        podAntiAffinity:\n          preferredDuringSchedulingIgnoredDuringExecution:\n          - weight: 5\n            podAffinityTerm:\n              topologyKey: \"kubernetes.io/hostname\"\n              labelSelector:\n                matchLabels:\n                  app.kubernetes.io/name: memcached\n                  app.kubernetes.io/instance: memcached-sample14\n      containers:\n      - name: memcached-sample14\n        image: memcached:1.5.20\n        imagePullPolicy: \"\"\n        command:\n        - memcached\n        - -m 64\n        - -o\n        - modern\n        - -v\n        ports:\n        - name: memcache\n          containerPort: 11211\n        livenessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 30\n          timeoutSeconds: 5\n        readinessProbe:\n          tcpSocket:\n            port: memcache\n          initialDelaySeconds: 5\n          timeoutSeconds: 1\n        resources:\n          requests:\n            cpu: 50m\n            memory: 64Mi\n  updateStrategy:\n    type: RollingUpdate\n",
+                    "name": "memcached-sample14"
+                }
+            }
+        }
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": ""
+    }
+}
